@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>KONA – Chamados RH</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>KONA RH – Abrir Chamado</h1>
+
+    <label>Matrícula:</label>
+    <input id="matricula" type="number" required>
+
+    <label>Nome:</label>
+    <input id="nome" type="text" required>
+
+    <label>Setor:</label>
+    <select id="setor">
+      <option>Operacional</option>
+      <option>ADM</option>
+      <option>RH</option>
+      <option>Prevenção de Perdas</option>
+      <option>Frota</option>
+    </select>
+
+    <label>Assunto:</label>
+    <select id="assunto">
+      <option>Troca de EPI</option>
+      <option>Troca de bota</option>
+      <option>Problema com uniforme</option>
+      <option>Documentação</option>
+      <option>Problema pessoal</option>
+      <option>Solicitação interna</option>
+      <option>Equipamentos</option>
+      <option>Outros</option>
+    </select>
+
+    <label>Descrição do chamado:</label>
+    <textarea id="descricao"></textarea>
+
+    <button onclick="enviarChamado()">Enviar Chamado</button>
+
+    <p id="msg"></p>
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
