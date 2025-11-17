@@ -1,52 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>KONA – Chamados RH</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KONA RH – Abertura de Chamados</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0d4d7d;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: #0d4d7d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0b3c63;
+    }
+    .success {
+      margin-top: 15px;
+      color: green;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
-
   <div class="container">
-    <h1>KONA RH – Abrir Chamado</h1>
+    <h2>KONA RH<br>Abertura de Chamados</h2>
 
-    <label>Matrícula:</label>
-    <input id="matricula" type="number" required>
+    <label>Matrícula</label>
+    <input id="matricula" type="text" required placeholder="Digite sua matrícula">
 
-    <label>Nome:</label>
-    <input id="nome" type="text" required>
+    <label>Nome</label>
+    <input id="nome" type="text" required placeholder="Seu nome completo">
 
-    <label>Setor:</label>
+    <label>Setor</label>
     <select id="setor">
+      <option value="">Selecione</option>
+      <option>Administrativo</option>
+      <option>Financeiro</option>
       <option>Operacional</option>
-      <option>ADM</option>
+      <option>Comercial</option>
       <option>RH</option>
-      <option>Prevenção de Perdas</option>
-      <option>Frota</option>
-    </select>
-
-    <label>Assunto:</label>
-    <select id="assunto">
-      <option>Troca de EPI</option>
-      <option>Troca de bota</option>
-      <option>Problema com uniforme</option>
-      <option>Documentação</option>
-      <option>Problema pessoal</option>
-      <option>Solicitação interna</option>
-      <option>Equipamentos</option>
       <option>Outros</option>
     </select>
 
-    <label>Descrição do chamado:</label>
-    <textarea id="descricao"></textarea>
+    <label>Assunto</label>
+    <textarea id="assunto" rows="4" required placeholder="Descreva o motivo do chamado..."></textarea>
 
-    <button onclick="enviarChamado()">Enviar Chamado</button>
+    <button onclick="enviar()">Enviar Chamado</button>
 
-    <p id="msg"></p>
+    <div id="msg" class="success"></div>
   </div>
 
-  <script src="app.js"></script>
+  <script>
+    async function enviar() {
+      const url = "https://script.google.com/macros/s/AKfycbxpuSARsUyBayI8MySKWTObRqxLG3wgsACfwpubh-uGwkMX1yKzsAUCU_QjPWEbmtEf/exec";
+
+      const dados = {
+        matricula: document.getElementById("matricula").value,
+        nome: document.getElementById("nome").value,
+        setor: document.getElementById("setor").value,
+        assunto: document.getElementById("assunto").value
+      };
+
+      const req = await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
+      });
+
+      document.getElementById("msg").innerHTML = "Chamado enviado com sucesso!";
+      document.getElementById("matricula").value = "";
+      document.getElementById("nome").value = "";
+      document.getElementById("setor").value = "";
+      document.getElementById("assunto").value = "";
+    }
+  </script>
 
 </body>
 </html>
