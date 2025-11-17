@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kona RH – Abertura de Chamado</title>
 
   <style>
@@ -27,14 +27,13 @@
       padding: 25px;
       background: white;
       border-radius: 14px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
     }
 
     label {
-      display: block;
-      margin-top: 18px;
       font-weight: bold;
-      color: #1e3a8a;
+      margin-top: 12px;
+      display: block;
     }
 
     input, select, textarea {
@@ -42,7 +41,7 @@
       padding: 10px;
       margin-top: 6px;
       border-radius: 8px;
-      border: 1px solid #cbd5e1;
+      border: 1px solid #ccc;
       font-size: 15px;
     }
 
@@ -51,29 +50,21 @@
       resize: none;
     }
 
-    .btn {
-      margin-top: 22px;
+    button {
       width: 100%;
+      margin-top: 20px;
+      padding: 14px;
       background: #1e3a8a;
       color: white;
-      padding: 12px;
       border: none;
       border-radius: 8px;
-      font-size: 17px;
+      font-size: 18px;
       cursor: pointer;
       font-weight: bold;
     }
 
-    .btn:hover {
-      background: #163076;
-    }
-
-    .success {
-      display: none;
-      margin-top: 20px;
-      text-align: center;
-      color: #0d8a25;
-      font-weight: bold;
+    button:hover {
+      background: #152e6a;
     }
   </style>
 </head>
@@ -83,44 +74,76 @@
   <div class="header">Kona RH – Abertura de Chamado</div>
 
   <div class="container">
-    <form id="formChamado" method="POST" action="https://script.google.com/macros/s/AKfycbxpuSARsUyBayI8MySKWTObRqxLG3wgsACfwpubh-uGwkMX1yKzsAUCU_QjPWEbmtEf/exec">
+    <form id="formChamado">
 
       <label>Matrícula</label>
-      <input type="text" name="matricula" required>
+      <input type="number" name="matricula" required>
 
       <label>Nome</label>
       <input type="text" name="nome" required>
 
       <label>Setor</label>
-      <input type="text" name="setor" required>
+      <select name="setor" required>
+        <option value="">Selecione</option>
+        <option>Operacional</option>
+        <option>Administrativo</option>
+        <option>RH</option>
+        <option>Prevenção de Perdas</option>
+        <option>Frota</option>
+      </select>
 
       <label>Assunto</label>
-      <textarea name="assunto" required></textarea>
+      <select name="assunto" required>
+        <option value="">Selecione</option>
+        <option>Troca de EPI</option>
+        <option>Troca de bota</option>
+        <option>Problema com uniforme</option>
+        <option>Documentação</option>
+        <option>Problema pessoal</option>
+        <option>Solicitação interna</option>
+        <option>Equipamentos</option>
+        <option>Outros</option>
+      </select>
 
-      <button class="btn" type="submit">Enviar Chamado</button>
+      <label>Descrição</label>
+      <textarea name="descricao" required></textarea>
+
+      <button type="submit">Enviar Chamado</button>
+
     </form>
-
-    <div class="success" id="msgSucesso">Chamado enviado com sucesso! 🎉</div>
   </div>
 
-  <script>
-    const form = document.getElementById("formChamado");
-    const msg = document.getElementById("msgSucesso");
+<script>
+document.getElementById("formChamado").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  const form = document.getElementById("formChamado");
+  const formData = {
+    matricula: form.matricula.value,
+    nome: form.nome.value,
+    setor: form.setor.value,
+    assunto: form.assunto.value,
+    descricao: form.descricao.value
+  };
 
-      const dados = new FormData(form);
-
-      await fetch(form.action, {
-        method: "POST",
-        body: dados
-      });
-
-      msg.style.display = "block";
-      form.reset();
-    });
-  </script>
+  fetch("https://script.google.com/macros/s/AKfycbxvfyj8Zyd1gUa9RlU9LmgcTilb3GYTlsGlizDgIPVd9dOHOPNBHo9Doevq6XtF6NB3/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(() => {
+    alert("Chamado enviado com sucesso!");
+    form.reset();
+  })
+  .catch(err => {
+    alert("Erro ao enviar o chamado.");
+    console.error(err);
+  });
+});
+</script>
 
 </body>
 </html>
